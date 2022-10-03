@@ -1,0 +1,19 @@
+---
+version: 2
+plan:
+  key: CONT-EN3
+plan-permissions:
+- roles:
+  - anonymous
+  permissions:
+  - view
+- roles:
+  - logged-in
+  permissions:
+  - view
+  - build
+  - edit
+  - build
+  - clone
+  - admin
+

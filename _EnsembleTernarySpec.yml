@@ -1,0 +1,274 @@
+#---
+#version: 2
+#plan:
+#  project-key: CONT
+#  key: EN3
+#  name: Ensemble Ternary
+#  master-branch: main
+#stages:
+#- Octane Stage O1:
+#    manual: false
+#    final: false
+#    jobs:
+#    - O1X01 _ensemble clone
+#- Octane Stage O2:
+#    manual: false
+#    final: false
+#    jobs:
+#    - O2X01 _ensemble bootstrap macOS
+#    - O2X02 _ensemble bootstrap Linux
+#- Octane Stage O3:
+#    manual: false
+#    final: false
+#    jobs:
+#    - O3X01 _ensemble build-for-running macOS
+#    - O3X02 _ensemble build-for-running Linux
+#- Octane Stage O4:
+#    manual: false
+#    final: false
+#    jobs:
+#    - O4X01 _ensemble collect-executables-for-running
+#- Octane Stage O5:
+#    manual: false
+#    final: false
+#    jobs:
+#    - O5X01 _ensemble publish
+#O1X01 _ensemble clone:
+#  key: O1X01
+#  tasks:
+#  - checkout:
+#      repository: IRC-Ensemble-bb
+#      force-clean-build: 'false'
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - 'git lfs install
+#
+#        git lfs pull'
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - ./bin/macOS/ensemble _ensemble clone --merge main --branch ${bamboo_planRepository_branch} --octane-auto-mount --hexx-store
+#        ensemble_sandbox --zip-artifacts
+#  artifacts:
+#  - name: Artifacts
+#    location: artifacts
+#    pattern: '**'
+#    shared: false
+#    required: true
+#  - name: bin
+#    location: bin
+#    pattern: '**'
+#    shared: true
+#    required: true
+#  requirements:
+#  - macbuildp: 00|01|02|03|04|05|06|07|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59
+#  other:
+#    clean-working-dir: true
+#  final-tasks:
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - umount /Users/bamboo/octane || true
+#O2X01 _ensemble bootstrap macOS:
+#  key: O2X01
+#  tasks:
+#  - checkout:
+#      force-clean-build: 'false'
+#      conditions:
+#      - variable:
+#          exists: sky_is_blue_at_midnight
+#  - artifact-download:
+#      artifacts:
+#      - name: bin
+#        destination: bin
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - ./bin/macOS/ensemble _ensemble bootstrap --merge main --branch ${bamboo_planRepository_branch} --octane-auto-mount
+#        --hexx-store ensemble_sandbox --zip-artifacts
+#  artifacts:
+#  - name: Artifacts
+#    location: artifacts
+#    pattern: '**'
+#    shared: false
+#    required: true
+#  requirements:
+#  - macbuildp: 00|01|02|03|04|05|06|07|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59
+#  other:
+#    clean-working-dir: true
+#  final-tasks:
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - umount /Users/bamboo/octane || true
+#O2X02 _ensemble bootstrap Linux:
+#  key: O2X02
+#  tasks:
+#  - checkout:
+#      force-clean-build: 'false'
+#      conditions:
+#      - variable:
+#          exists: sky_is_blue_at_midnight
+#  - artifact-download:
+#      artifacts:
+#      - name: bin
+#        destination: bin
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - ./bin/Linux/ensemble _ensemble bootstrap --platform Linux --merge main --branch ${bamboo_planRepository_branch} --octane-auto-mount
+#        --hexx-store ensemble_sandbox --zip-artifacts
+#  artifacts:
+#  - name: Artifacts
+#    location: artifacts
+#    pattern: '**'
+#    shared: false
+#    required: true
+#  requirements:
+#  - buildcluster: lnxbuild-atl
+#  other:
+#    clean-working-dir: true
+#  final-tasks:
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - umount /mnt/octane || true
+#O3X01 _ensemble build-for-running macOS:
+#  key: O3X01
+#  tasks:
+#  - checkout:
+#      force-clean-build: 'false'
+#      conditions:
+#      - variable:
+#          exists: sky_is_blue_at_midnight
+#  - artifact-download:
+#      artifacts:
+#      - name: bin
+#        destination: bin
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - ./bin/macOS/ensemble _ensemble build-for-running --update-version --merge main --branch ${bamboo_planRepository_branch}
+#        --octane-auto-mount --hexx-store ensemble_sandbox --zip-artifacts
+#  artifacts:
+#  - name: Artifacts
+#    location: artifacts
+#    pattern: '**'
+#    shared: false
+#    required: true
+#  requirements:
+#  - macbuildp: 00|01|02|03|04|05|06|07|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59
+#  other:
+#    clean-working-dir: true
+#  final-tasks:
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - umount /Users/bamboo/octane || true
+#O3X02 _ensemble build-for-running Linux:
+#  key: O3X02
+#  tasks:
+#  - checkout:
+#      force-clean-build: 'false'
+#      conditions:
+#      - variable:
+#          exists: sky_is_blue_at_midnight
+#  - artifact-download:
+#      artifacts:
+#      - name: bin
+#        destination: bin
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - ./bin/Linux/ensemble _ensemble build-for-running --update-version --platform Linux --merge main --branch ${bamboo_planRepository_branch}
+#        --octane-auto-mount --hexx-store ensemble_sandbox --zip-artifacts
+#  artifacts:
+#  - name: Artifacts
+#    location: artifacts
+#    pattern: '**'
+#    shared: false
+#    required: true
+#  requirements:
+#  - buildcluster: lnxbuild-atl
+#  other:
+#    clean-working-dir: true
+#  final-tasks:
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - umount /mnt/octane || true
+#O4X01 _ensemble collect-executables-for-running:
+#  key: O4X01
+#  tasks:
+#  - checkout:
+#      force-clean-build: 'false'
+#      conditions:
+#      - variable:
+#          exists: sky_is_blue_at_midnight
+#  - artifact-download:
+#      artifacts:
+#      - name: bin
+#        destination: bin
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - ./bin/macOS/ensemble _ensemble collect-executables-for-running --octane-auto-mount --hexx-store ensemble_sandbox --zip-artifacts
+#  artifacts:
+#  - name: Artifacts
+#    location: artifacts
+#    pattern: '**'
+#    shared: false
+#    required: true
+#  requirements:
+#  - macbuildp: 00|01|02|03|04|05|06|07|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59
+#  other:
+#    clean-working-dir: true
+#  final-tasks:
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - umount /Users/bamboo/octane || true
+#O5X01 _ensemble publish:
+#  key: O5X01
+#  tasks:
+#  - checkout:
+#      force-clean-build: 'false'
+#      conditions:
+#      - variable:
+#          exists: sky_is_blue_at_midnight
+#  - artifact-download:
+#      artifacts:
+#      - name: bin
+#        destination: bin
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - ./bin/macOS/ensemble _ensemble publish --start-secondary-plan --octane-auto-mount --hexx-store ensemble_sandbox --zip-artifacts
+#  artifacts:
+#  - name: Artifacts
+#    location: artifacts
+#    pattern: '**'
+#    shared: false
+#    required: true
+#  requirements:
+#  - macbuildp: 00|01|02|03|04|05|06|07|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59
+#  other:
+#    clean-working-dir: true
+#  final-tasks:
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - umount /Users/bamboo/octane || true
+#triggers:
+#- remote
+#branches:
+#  create: for-new-branch
+#  delete:
+#    after-deleted-days: 7
+#    after-inactive-days: 7
+#  link-to-jira: true
+#other:
+#  concurrent-build-plugin: system-default
+#
+#

@@ -1,0 +1,15 @@
+---
+!include '_EnsembleSpec.yml'
+
+
+---
+!include 'permissions.yml'
+
+
+---
+!include '_EnsembleSecondarySpec.yml'
+
+
+---
+!include 'secondary_permissions.yml'
+
